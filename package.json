@@ -1,0 +1,31 @@
+{
+  "name": "web_services_project",
+  "version": "1.0.0",
+  "description": "Web services project for course IT 325 Web services",
+  "main": "index.js",
+  "scripts": {
+    "start": "node src/index.js",
+    "dev": "nodemon --trace-warnings src/index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/R4Y-repo/web_services_project.git"
+  },
+  "author": "Rayen Nasraoui",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/R4Y-repo/web_services_project/issues"
+  },
+  "homepage": "https://github.com/R4Y-repo/web_services_project#readme",
+  "dependencies": {
+    "@fastify/env": "^4.2.0",
+    "@prisma/client": "^4.7.1",
+    "fastify": "^4.10.2",
+    "fastify-jwt": "^4.2.0",
+    "fastify-swagger": "^5.2.0",
+    "uuid": "^9.0.0"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.20"
+  }
+}
