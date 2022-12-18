@@ -10,9 +10,34 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+// User schema
+// Should contain information about the user and their accounts
+
 model User {
-  id String @id @default(uuid())
-  email String @unique
-  name String?
+  id       String    @id @unique @default(uuid())
+  email    String    @unique
+  name     String    @db.VarChar(32)
+  password String    @db.VarChar(32)
+  salt     String
+  // accounts array to create one to many relationship between owner and accounts
+  accounts Account[]
 }
 
+// User schema
+// Should contain information about the account and its transactions
+
+model Account {
+  id           String        @id @unique @default(uuid())
+  balance      Float
+  // to ensure many to many relationship between account and transaction
+  transactions Transaction[]
+  // owner id to create one to many relationship between owner and accounts
+  ownerId      String
+  owner        User          @relation(fields: [ownerId], references: [id])
+}
+
+model Transaction {
+  id       String    @id @unique @default(uuid())
+  // to ensure many to many relationship between account and transaction
+  accounts Account[]
+}
