@@ -8,6 +8,7 @@ generator client {
 datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
+  shadowDatabaseUrl = env("SHADOW_DATABASE_URL")
 }
 
 // User schema
@@ -17,12 +18,11 @@ model User {
   id       String    @id @unique @db.Uuid
   email    String    @unique
   name     String    @db.VarChar(32)
-  password String    @db.VarChar()
   // accounts array to create one to many relationship between owner and accounts
   accounts Account[]
 }
 
-// User schema
+// Account schema
 // Should contain information about the account and its transactions
 
 model Account {
@@ -36,12 +36,31 @@ model Account {
   owner    User          @relation(fields: [ownerId], references: [id])
 }
 
+// Platform Schema
+// Should contain information about some platforms that the user might've use 
+
 model Platform {
-  id          String @id @unique @default(uuid()) @db.Uuid
+  id          String    @id @unique @default(uuid()) @db.Uuid
   name        String
   link        String
-  description String
+  description String?
+  service     Service[]
 }
+
+// Service Schema
+// Should contain information about the service that the platform provides including the name, a description and it's price
+
+model Service {
+  id          String   @id @unique @default(uuid()) @db.Uuid
+  name        String
+  description String?
+  price       Float
+  platformId  String   @db.Uuid()
+  platform    Platform @relation(fields: [platformId], references: [id])
+}
+
+// Transaction Schema
+// Provides a schema for transactions that are done between two users or a user and a platform
 
 model Transaction {
   // to ensure many to many relationship between account and transaction
