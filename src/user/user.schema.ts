@@ -29,3 +29,9 @@ const signInUserSchema = z.object({
 })
 
 export type SignInUserInput = z.infer<typeof signInUserSchema>
+
+const getUserSchema = z.object({
+    jwt: z.string()
+})
+
+export type GetUserInput = z.infer<typeof getUserSchema>
