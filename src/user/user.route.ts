@@ -1,15 +1,16 @@
 import { FastifyInstance } from "fastify"
-import { GetUserHandler, SignInUserHandler, SignOutUserHandler, UpdateUserHandler, registerUserHandler } from "./user.controller"
+import { GetUserHandler, SignInUserHandler, UpdateUserHandler, registerUserHandler } from "./user.controller"
 
 // where the routes for the user gets defined
 
-export default async function userRoutes(server: FastifyInstance) {
+export default async function UserRoutes(server: FastifyInstance) {
     server.post("/register",registerUserHandler)
     server.post("/signin",SignInUserHandler)
-    server.post("/signout",SignOutUserHandler)
-    server.post("/update",UpdateUserHandler)
-    server.get("/get",{
-        
+    server.post("/update",{
+        preHandler:[server.authenticate]
+    },UpdateUserHandler)
+    server.get("/",{
+        preHandler:[server.authenticate]
     },GetUserHandler)
 }
 

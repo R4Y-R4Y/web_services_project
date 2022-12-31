@@ -3,10 +3,10 @@ import { GetPlatformMultipleHandler, GetPlatformSingleHandler } from "./platform
 
 
 export default async function PlatformRoutes(server: FastifyInstance) {
-    server.get("/",{
+    server.get("/many",{
         preHandler: [server.authenticate]
     },GetPlatformMultipleHandler)
-    server.get("/:id",{
+    server.get("/one",{
         preHandler: [server.authenticate]
     },GetPlatformSingleHandler)
 }

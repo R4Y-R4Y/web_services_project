@@ -5,7 +5,8 @@
   "main": "index.js",
   "scripts": {
     "start": "ts-node src/index.ts",
-    "dev": "nodemon src/index.ts"
+    "dev": "nodemon src/index.ts",
+    "push": "npx prisma db push"
   },
   "repository": {
     "type": "git",
@@ -19,12 +20,12 @@
   "homepage": "https://github.com/R4Y-repo/web_services_project#readme",
   "dependencies": {
     "@fastify/env": "^4.2.0",
-    "@prisma/client": "^4.7.1",
+    "@fastify/jwt": "^6.5.0",
+    "@prisma/client": "^4.8.0",
     "@supabase/supabase-js": "^2.2.2",
     "bcrypt": "^5.1.0",
     "dotenv": "^16.0.3",
     "fastify": "^4.10.2",
-    "fastify-jwt": "^4.2.0",
     "fastify-swagger": "^5.2.0",
     "fastify-zod": "^1.2.0",
     "jsonwebtoken": "^9.0.0",

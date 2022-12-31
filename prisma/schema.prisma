@@ -6,18 +6,18 @@ generator client {
 }
 
 datasource db {
-  provider          = "postgresql"
-  url               = env("DATABASE_URL")
-  shadowDatabaseUrl = env("SHADOW_DATABASE_URL")
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
 }
 
 // User schema
 // Should contain information about the user and their accounts
 
 model User {
-  id       String    @id @unique @db.Uuid
+  id       String    @id @unique @db.Uuid @default(uuid())
   email    String    @unique
   name     String    @db.VarChar(32)
+  password String    @db.VarChar()
   // accounts array to create one to many relationship between owner and accounts
   accounts Account[]
 }
@@ -26,7 +26,7 @@ model User {
 // Should contain information about the account and its transactions
 
 model Account {
-  id       String        @id @unique @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
+  id       String        @id @unique @default(uuid()) @db.Uuid
   balance  Float
   // to ensure many to many relationship between two account that made a transaction
   payer    Transaction[] @relation("payer")
@@ -40,7 +40,7 @@ model Account {
 // Should contain information about some platforms that the user might've use 
 
 model Platform {
-  id          String    @id @unique @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
+  id          String    @id @unique @default(uuid()) @db.Uuid
   name        String
   link        String
   description String?
@@ -51,7 +51,7 @@ model Platform {
 // Should contain information about the service that the platform provides including the name, a description and it's price
 
 model Service {
-  id          String   @id @unique @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
+  id          String   @id @unique @default(uuid()) @db.Uuid
   name        String
   description String?
   price       Float
@@ -64,11 +64,10 @@ model Service {
 
 model Transaction {
   // to ensure many to many relationship between account and transaction
-  id          String  @id @unique @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
+  id          String  @id @unique @default(uuid()) @db.Uuid
   payment     Float
   payer       Account @relation(name: "payer", fields: [payer_id], references: [id])
   payer_id    String  @db.Uuid
   reciever    Account @relation(name: "reciever", fields: [reciever_id], references: [id])
   reciever_id String  @db.Uuid
-
 }

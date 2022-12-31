@@ -1,64 +1,76 @@
 import { FastifyReply } from "fastify/types/reply";
 import { FastifyRequest } from "fastify/types/request";
-import { GetUserInput, RegisterUserInput, SignInUserInput } from "./user.schema";
-import supabase from "../utils/supabase";
+import { RegisterUserInput, SigninUserInput } from "./user.schema";
+import { hashPassword, verifyPassword } from "../utils/password";
+import prisma from "../utils/prisma";
+import { server } from "..";
+
 export async function registerUserHandler(request :FastifyRequest<{Body: RegisterUserInput}>, reply:FastifyReply) {
     const body = request.body;
     try {
-        let { data, error } = await supabase.auth.signUp({
-            email: body.email,
-            password: body.password
-        })
-        
-        if(error) throw error;
-        
-        reply.code(201).send(data)
+        const { password, name, email } = body;
+        const hash = await hashPassword(password);
+        const user = await prisma.user.create({
+            data:{
+                name,
+                email,
+                password: hash,
+            }
+        });
+
+        reply.code(201).send(user)
     } catch (error) {
         return reply.code(500).send(error)
     }
 }
 
-export async function SignInUserHandler(request: FastifyRequest<{Body: SignInUserInput}>, reply: FastifyReply) {
+export async function SignInUserHandler(request: FastifyRequest<{Body: SigninUserInput}>, reply: FastifyReply) {
     const body = request.body
-    console.log(body)
     try{
-        let { data, error } = await supabase.auth.signInWithPassword({
-            email: body.email,
-            password: body.password
+        const user = await prisma.user.findUnique({
+            where:{
+                email: body.email
+            }
         })
+        console.log(user)
+        if (!user) {
+            return reply.code(401).send({
+                message: "Invalid email or password",
+            });
+        }
 
-        if(error) throw error;
-    
-        reply.code(201).send(data)
-        
+        const { password,  ...info } = user;
+        const correctPassword = await verifyPassword(body.password,password)
+        if(correctPassword){
+            return reply.code(201).send({accessToken: server.jwt.sign(info,{expiresIn: "60m"}) ,...info})
+        } else {
+            return reply.code(401).send({message: "Sign in failed. Your password or email is invalid."})
+        }
     } catch(error) {
         return reply.code(500).send(error)
     }
 }
 
-export async function SignOutUserHandler(request: FastifyRequest, reply: FastifyReply) {
-    try {
-        let { error } = await supabase.auth.signOut()
-        if(error) throw error;
-    
-        reply.code(201).send({statusCode:201,message:"Logged out successfully"})
-    } catch (error) {
-        return reply.code(500).send(error)
-    }
-}
 
-export async function UpdateUserHandler(request: FastifyRequest<{Body: SignInUserInput}>,reply: FastifyReply) {
-    const body = request.body
-    console.log(body)
+export async function UpdateUserHandler(request: FastifyRequest<{Body: SigninUserInput}>,reply: FastifyReply) {
+    const {email, password} = request.body
+    const { id } = await request.user as { id: string }
+    console.log(request.user)
     try {
-        const { data, error } = await supabase.auth.updateUser({
-            email: body.email,
-            password: body.password,
+        const emailUpdate = await prisma.user.update({
+            where:{id},
+            data:{email}
         })
-  
-        if(error) throw error;
-    
-        reply.code(201).send(data)
+        console.log(emailUpdate)
+        const hash = password ? await hashPassword(password) : null
+        const passwordUpdate = password ? await prisma.user.update({
+            where:{id},
+            data:{password: hash} as { password: string }
+        }) : null
+        console.log(passwordUpdate)
+        const result = passwordUpdate ? passwordUpdate : emailUpdate
+        const message = passwordUpdate ? (emailUpdate ? "Successfully changed Email and Password!" :"Successfully changed password!") : "Successfully changed email!"
+        reply.code(200).send({message})
     } catch (error) {
         return reply.code(500).send(error)
     }
@@ -66,12 +78,18 @@ export async function UpdateUserHandler(request: FastifyRequest<{Body: SignInUse
 
 export async function GetUserHandler(request: FastifyRequest<any>, reply: FastifyReply) {
     try {
-        let jwt = String(request.headers["authorization"])
-        const {data, error} = await supabase.auth.getUser(jwt)
-        
-        if(error) throw error;
-        
-        reply.code(200).send(data)
+        const { id } = await request.jwtDecode() as { id: string }
+        const result = prisma.user.findUnique({
+            where:{
+                id
+            },
+            select: {
+              email: true,
+              name: true,
+              id: true,
+            },
+          })
+        reply.code(200).send(result)
     } catch (error) {
         return reply.code(500).send(error)
     }
