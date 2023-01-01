@@ -1,5 +1,5 @@
 import { FastifyInstance } from "fastify";
-import { GetAccountMultipleHandler, GetAccountSingleHandler } from "./account.controller";
+import { CreateAccountHandler, DeleteAccountHandler, GetAccountMultipleHandler, GetAccountSingleHandler, BuyServiceAccountHandler } from "./account.controller";
 
 export default async function AccountRoutes(server: FastifyInstance) {
     server.get("/many",{
@@ -8,13 +8,13 @@ export default async function AccountRoutes(server: FastifyInstance) {
     server.get("/one",{
         preHandler: [server.authenticate]
     },GetAccountSingleHandler)
-    server.get("/create",{
+    server.post("/create",{
         preHandler: [server.authenticate]
-    },GetAccountSingleHandler)
-    server.get("/update",{
+    },CreateAccountHandler)
+    server.post("/buy",{
         preHandler: [server.authenticate]
-    },GetAccountSingleHandler)
-    server.get("/delete",{
+    },BuyServiceAccountHandler)
+    server.delete("/delete",{
         preHandler: [server.authenticate]
-    },GetAccountSingleHandler)
+    },DeleteAccountHandler)
 }

@@ -14,12 +14,21 @@ datasource db {
 // Should contain information about the user and their accounts
 
 model User {
-  id       String    @id @unique @db.Uuid @default(uuid())
+  id       String    @id @unique @default(uuid()) @db.Uuid
   email    String    @unique
   name     String    @db.VarChar(32)
   password String    @db.VarChar()
   // accounts array to create one to many relationship between owner and accounts
   accounts Account[]
+  // session array to create one to many relationship between owner and sessions
+  session  Session[]
+}
+
+model Session {
+  id      String  @id @unique @default(uuid()) @db.Uuid
+  user    User[]
+  user_id String  @db.Uuid
+  valid   Boolean
 }
 
 // Account schema

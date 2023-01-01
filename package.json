@@ -6,7 +6,10 @@
   "scripts": {
     "start": "ts-node src/index.ts",
     "dev": "nodemon src/index.ts",
-    "push": "npx prisma db push"
+    "mig": "npx prisma migrate dev",
+    "gen": "npx prisma generate",
+    "studio": "npx prisma studio",
+    "faker": "ts-node src\\utils\\faker.ts"
   },
   "repository": {
     "type": "git",

@@ -4,6 +4,7 @@ import UserRoutes from "./user/user.route"
 import AccountRoutes from "./account/account.route"
 import fjwt, {JWT} from '@fastify/jwt'
 import { userSchemas } from "./user/user.schema"
+import PlatformRoutes from "./platform/platform.route"
 
 dotenv.config()
 
@@ -27,7 +28,8 @@ server.get("/healthcheck",()=>{
 
 async function main() {
   server.register(UserRoutes,{prefix:'api/user'})
-  server.register(AccountRoutes,{prefix:'api/accounts'})
+  server.register(AccountRoutes,{prefix:'api/account'})
+  server.register(PlatformRoutes,{prefix:'api/platform'})
   server.register(fjwt,{
     secret: String(process.env.JWT_SECRET),
 
@@ -39,6 +41,7 @@ async function main() {
   server.decorate("authenticate",
     async (request: FastifyRequest, reply: FastifyReply) => {
       try {
+        
         return await request.jwtVerify();
       } catch (e) {
         return reply.send(e);
