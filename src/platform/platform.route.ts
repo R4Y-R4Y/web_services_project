@@ -1,10 +1,18 @@
 import { FastifyInstance } from "fastify";
 import { GetPlatformMultipleHandler, GetPlatformSingleHandler, GetServiceMultipleHandler, GetServicePlatformHandler, GetServiceSingleHandler } from "./platform.controller";
+import { $ref } from "../user/user.schema";
 
 
 export default async function PlatformRoutes(server: FastifyInstance) {
     server.get("/many",{
-        preHandler: [server.authenticate]
+        preHandler: [server.authenticate],
+        schema:{
+            description:"Get user's accounts",
+            response:{
+                201: $ref("createUserResponseSchema")
+            },
+            tags: ["User"]
+        }
     },GetPlatformMultipleHandler)
     server.get("/one",{
         preHandler: [server.authenticate]

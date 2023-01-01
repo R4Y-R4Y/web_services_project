@@ -1,19 +1,65 @@
 import { FastifyInstance } from "fastify"
 import { GetUserHandler, RefreshUserHandler, SignInUserHandler, UpdateUserHandler, registerUserHandler } from "./user.controller"
+import { $ref } from "./user.schema"
 
 // where the routes for the user gets defined
 
 export default async function UserRoutes(server: FastifyInstance) {
-    server.post("/register",registerUserHandler)
-    server.post("/signin",SignInUserHandler)
+    server.post("/register",{
+        schema:{
+            description:"Register a user to our platform",
+            body: $ref("createUserSchema"),
+            response:{
+                201: $ref("createUserResponseSchema")
+            },
+            tags: ["User"]
+        }
+    },registerUserHandler)
+    server.post("/signin",{
+        schema:{
+            description:"Refresh access and refresh tokens",
+            body: $ref("loginSchema"),
+            response:{
+                201: $ref("loginResponseSchema")
+            },
+            tags: ["User"]
+        }
+    },SignInUserHandler)
     server.put("/refresh",{
-        preHandler:[server.authenticate]
+        preHandler:[server.authenticate],
+        schema:{
+            description:"Refresh access and refresh tokens",
+            response:{
+                201: $ref("loginResponseSchema")
+            },
+            tags: ["User"]
+        }
     },RefreshUserHandler)
     server.patch("/update",{
-        preHandler:[server.authenticate]
+        preHandler:[server.authenticate],
+        schema:{
+            description:"Update user credentials",
+            body: $ref("createUserSchema"),
+            response:{
+                201: $ref("createUserResponseSchema")
+            },
+            security: [
+                {
+                  "accessToken": []
+                }
+            ],
+            tags: ["User"],
+        }
     },UpdateUserHandler)
     server.get("/",{
-        preHandler:[server.authenticate]
+        preHandler:[server.authenticate],
+        schema:{
+            description:"Get user's accounts",
+            response:{
+                201: $ref("updateUserResponseSchema")
+            },
+            tags: ["User"]
+        }
     },GetUserHandler)
 }
 

@@ -18,7 +18,7 @@ export async function GetPlatformSingleHandler(request: FastifyRequest<{Body: Ge
     try {
         const data = await prisma.platform.findFirst({
             where:{ 
-                name: {startsWith: body.name, mode:"insensitive"}
+                name: {contains: body.name, mode:"insensitive"}
             }
         })
         reply.code(200).send(data)
@@ -32,7 +32,7 @@ export async function GetServiceMultipleHandler(request: FastifyRequest<{Body: G
     try {
         const data = await prisma.service.findMany({
             where:{ 
-                name: {startsWith: body.name, mode:"insensitive"}
+                name: {contains: body.name, mode:"insensitive"}
             }
         })
         reply.code(200).send(data)
@@ -46,7 +46,7 @@ export async function GetServiceSingleHandler(request: FastifyRequest<{Body: Get
     try {
         const data = await prisma.service.findFirst({
             where:{ 
-                name: {startsWith: body.name, mode:"insensitive"}
+                name: {contains: body.name, mode:"insensitive"}
             }
         })
         reply.code(200).send(data)
@@ -61,7 +61,7 @@ export async function GetServicePlatformHandler(request: FastifyRequest<{Body: G
         const data = await prisma.service.findFirst({
             where:{ 
                 platform:{
-                    name:{startsWith: body.name, mode:"insensitive"}
+                    name:{contains: body.name, mode:"insensitive"}
                 },
             },
             include:{
