@@ -7,29 +7,63 @@ This is a Web Service project built using the following stack:
 <table >
     <tr>
         <td align="center" margin= "0 20px 0 20px">
-            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/4/4c/Typescript_logo_2020.svg/1200px-Typescript_logo_2020.svg.png" alt="TypeScript logo" width="100">
-            <br>
-            TypeScript
+            <a href="https://www.typescriptlang.org/">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/4/4c/Typescript_logo_2020.svg/1200px-Typescript_logo_2020.svg.png" alt="TypeScript logo" width="100">
+                <br>
+                TypeScript
+            </a>
         </td>
         <td align="center" margin= "0 20px 0 20px">
-            <img src="https://github.com/openjs-foundation/artwork/blob/main/projects/fastify/fastify-logo-stacked-white-dark_background.png?raw=true" alt="Fastify logo" width="100">
-            <br>
-            Fastify
+            <a href="https://www.fastify.io/">
+                <img src="https://github.com/openjs-foundation/artwork/blob/main/projects/fastify/fastify-logo-stacked-white-dark_background.png?raw=true" alt="Fastify logo" width="100">
+                <br>
+                Fastify
+            </a>
         </td>
         <td align="center" margin= "0 20px 0 20px">
-            <img src="https://res.cloudinary.com/practicaldev/image/fetch/s--6LfYwHeK--/c_fill,f_auto,fl_progressive,h_320,q_auto,w_320/https://dev-to-uploads.s3.amazonaws.com/uploads/organization/profile_image/1608/0f93b179-76bf-4ee7-a838-e8222fbef062.png" alt="Prisma logo" width="100">
-            <br>
-            Prisma
+            <a href="https://www.prisma.io/">
+                <img src="https://res.cloudinary.com/practicaldev/image/fetch/s--6LfYwHeK--/c_fill,f_auto,fl_progressive,h_320,q_auto,w_320/https://dev-to-uploads.s3.amazonaws.com/uploads/organization/profile_image/1608/0f93b179-76bf-4ee7-a838-e8222fbef062.png" alt="Prisma logo" width="100">
+                <br>
+                Prisma
+            </a>
         </td>
         <td align="center"  margin=" 0 20px 0 20px">
-            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/29/Postgresql_elephant.svg/800px-Postgresql_elephant.svg.png" width="100">
-            <br>
-            PostgreSQL
+            <a href="https://www.postgresql.org/">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/29/Postgresql_elephant.svg/800px-Postgresql_elephant.svg.png" width="100">
+                <br>
+                PostgreSQL
+            </a>
         </td>
     </tr>
 </table>
 
+It uses other technologies such as:
 
+<table >
+    <tr>
+        <td align="center" margin= "0 20px 0 20px">
+            <a href="https://swagger.io/">
+                <img src="https://avatars.githubusercontent.com/u/7658037?s=280&v=4" alt="Swagger logo" width="100">
+                <br>
+                Swagger
+            </a>
+        </td>
+        <td align="center" margin= "0 20px 0 20px">
+            <a href="https://jwt.io/">
+                <img src="https://seeklogo.com/images/J/json-web-tokens-jwt-io-logo-C003DEC47A-seeklogo.com.png" alt="JSON Web Tokens logo" width="100">
+                <br>
+                JSON Web Tokens
+            </a>
+        </td>
+        <td align="center" margin= "0 20px 0 20px">
+            <a href="https://zod.dev/">
+                <img src="https://raw.githubusercontent.com/colinhacks/zod/master/logo.svg" alt="Zod logo" width="100">
+                <br>
+                Zod
+            </a>
+        </td>
+    </tr>
+</table>
 
 <p>
   <img alt="Version" src="https://img.shields.io/badge/version-1.0.0-blue.svg?cacheSeconds=2592000" />
