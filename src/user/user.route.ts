@@ -19,6 +19,7 @@ export default async function UserRoutes(server: FastifyInstance) {
         schema:{
             description:"Sign in user and give the access and refresh tokens",
             body: $ref("loginSchema"),
+            security:[],
             response:{
                 201: $ref("loginResponseSchema")
             },
@@ -29,6 +30,7 @@ export default async function UserRoutes(server: FastifyInstance) {
         schema:{
             description:"Refresh access and refresh tokens",
             body: $ref("refreshSchema"),
+            security:[],
             response:{
                 201: $ref("loginResponseSchema")
             },

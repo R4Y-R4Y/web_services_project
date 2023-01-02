@@ -3,21 +3,57 @@ import { CreateAccountHandler, DeleteAccountHandler, GetAccountMultipleHandler, 
 
 export default async function AccountRoutes(server: FastifyInstance) {
     server.get("/many",{
-        preHandler: [server.authenticate]
+        preHandler: [server.authenticate],
+        schema:{
+            tags: ["Account"]
+        }
     },GetAccountMultipleHandler)
     server.get("/transaction/:page",{
-        preHandler: [server.authenticate]
+        preHandler: [server.authenticate],
+        schema:{
+            params:{
+                type:'object',
+                properties:{
+                    page:{type: 'integer', default:0}
+                }
+            },
+            tags: ["Account"]
+        }
     },GetTransactionMultipleHandler)
     server.get("/one/:id",{
-        preHandler: [server.authenticate]
+        preHandler: [server.authenticate],
+        schema:{
+            params:{
+                type:'object',
+                properties:{
+                    id:{type: 'string', format:'uuid'}
+                }
+            },
+            tags: ["Account"]
+        }
     },GetAccountSingleHandler)
     server.post("/create",{
-        preHandler: [server.authenticate]
+        preHandler: [server.authenticate],
+        schema:{
+            tags: ["Account"]
+        }
     },CreateAccountHandler)
     server.put("/buy/",{
-        preHandler: [server.authenticate]
+        preHandler: [server.authenticate],
+        schema:{
+            tags: ["Account"]
+        }
     },BuyServiceAccountHandler)
     server.delete("/delete/:id",{
-        preHandler: [server.authenticate]
+        preHandler: [server.authenticate],
+        schema:{
+            params:{
+                type:'object',
+                properties:{
+                    id:{type: 'string', format:'uuid'}
+                }
+            },
+            tags: ["Account"]
+        }
     },DeleteAccountHandler)
 }

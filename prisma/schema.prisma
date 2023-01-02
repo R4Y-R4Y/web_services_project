@@ -20,14 +20,14 @@ model User {
   password String    @db.VarChar()
   // accounts array to create one to many relationship between owner and accounts
   accounts Account[]
+  session  Session?
   // session array to create one to many relationship between owner and sessions
-  session  Session[]
 }
 
 model Session {
   id      String  @id @unique @default(uuid()) @db.Uuid
-  user    User[]
-  user_id String  @db.Uuid
+  user    User    @relation(fields: [user_id], references: [id])
+  user_id String  @unique @db.Uuid
   valid   Boolean
 }
 

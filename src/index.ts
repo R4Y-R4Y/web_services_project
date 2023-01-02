@@ -63,7 +63,7 @@ async function main() {
           description: "Access the user's accounts and do transactions"
         },
         {
-          name: "Platforms",
+          name: "Platform",
           description: "Access Platform's informations and their services"
         }
       ]
@@ -73,7 +73,7 @@ async function main() {
     routePrefix: "/documentation",
     initOAuth: {},
     uiConfig: {
-      docExpansion: "full",
+      docExpansion: "list",
       deepLinking: false,
     },
     uiHooks: {

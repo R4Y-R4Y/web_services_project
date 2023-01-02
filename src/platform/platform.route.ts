@@ -25,12 +25,21 @@ export default async function PlatformRoutes(server: FastifyInstance) {
         }
     },GetPlatformSingleHandler)
     server.get("/service-platform/:name",{
-        preHandler: [server.authenticate]
+        preHandler: [server.authenticate],
+        schema:{
+            tags: ["Platform"]
+        }
     },GetServicePlatformHandler)
     server.get("/service/many/:name/:page",{
-        preHandler: [server.authenticate]
+        preHandler: [server.authenticate],
+        schema:{
+            tags: ["Platform"]
+        }
     },GetServiceMultipleHandler)
     server.get("/service/one/:name",{
-        preHandler: [server.authenticate]
+        preHandler: [server.authenticate],
+        schema:{
+            tags: ["Platform"]
+        }
     },GetServiceSingleHandler)
 }
