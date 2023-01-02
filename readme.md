@@ -41,9 +41,6 @@ This project is licensed under the ISC License.
   <a href="https://github.com/R4Y-repo/web_services_project/graphs/commit-activity" target="_blank">
     <img alt="Maintenance" src="https://img.shields.io/badge/Maintained%3F-yes-green.svg" />
   </a>
-  <a href="#" target="_blank">
-    <img alt="License: ISC" src="https://img.shields.io/github/license/R4Y-repo/Web Service Project" />
-  </a>
 </p>
 
 
@@ -88,7 +85,7 @@ npm run dev
 
 2. Navigate to the Swagger documentation page in your web browser:
 
-`http://localhost:3000/documentation`
+`http://localhost:<insert your port from .env file here>/documentation`
 
 You should see a page that displays the documentation for all of the available API endpoints. You can use the Swagger documentation to try out different API requests and see the responses that they return.
 
@@ -106,9 +103,9 @@ To learn more about what Swagger can do for you, check out the [Swagger website]
 
 👤 **Rayen Nasraoui**
 
-* Website: https://r4y-repo.github.io/
-* Github: [@R4Y-repo](https://github.com/R4Y-repo)
-* LinkedIn: [@https:\/\/www.linkedin.com\/in\/rayen-nasraoui-603b22203\/](https://linkedin.com/in/https:\/\/www.linkedin.com\/in\/rayen-nasraoui-603b22203\/)
+* [Website](https://r4y-repo.github.io/)
+* [Github](https://github.com/R4Y-repo)
+* [LinkedIn](https://linkedin.com/in/https:\/\/www.linkedin.com\/in\/rayen-nasraoui-603b22203\/)
 
 ## Show your support
 
