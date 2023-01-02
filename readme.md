@@ -29,9 +29,7 @@ This is a Web Service project built using the following stack:
     </tr>
 </table>
 
-## License
 
-This project is licensed under the ISC License.
 
 <p>
   <img alt="Version" src="https://img.shields.io/badge/version-1.0.0-blue.svg?cacheSeconds=2592000" />
