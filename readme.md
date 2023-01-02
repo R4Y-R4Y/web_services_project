@@ -6,22 +6,22 @@ This is a Web Service project built using the following stack:
 
 <table >
     <tr>
-        <td style="align-content: center; margin: 0 20px 0 20px;">
+        <td align="center" margin= "0 20px 0 20px">
             <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/4/4c/Typescript_logo_2020.svg/1200px-Typescript_logo_2020.svg.png" alt="TypeScript logo" width="100">
             <br>
             TypeScript
         </td>
-        <td style="align-content: center; margin: 0 20px 0 20px;">
+        <td align="center" margin= "0 20px 0 20px">
             <img src="https://github.com/openjs-foundation/artwork/blob/main/projects/fastify/fastify-logo-stacked-white-dark_background.png?raw=true" alt="Fastify logo" width="100">
             <br>
             Fastify
         </td>
-        <td style="align-content: center; margin: 0 20px 0 20px;">
+        <td align="center" margin= "0 20px 0 20px">
             <img src="https://res.cloudinary.com/practicaldev/image/fetch/s--6LfYwHeK--/c_fill,f_auto,fl_progressive,h_320,q_auto,w_320/https://dev-to-uploads.s3.amazonaws.com/uploads/organization/profile_image/1608/0f93b179-76bf-4ee7-a838-e8222fbef062.png" alt="Prisma logo" width="100">
             <br>
             Prisma
         </td>
-        <td style="align-content: center;  margin: 0 20px 0 20px;">
+        <td align="center"  margin=" 0 20px 0 20px">
             <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/29/Postgresql_elephant.svg/800px-Postgresql_elephant.svg.png" width="100">
             <br>
             PostgreSQL
