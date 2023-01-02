@@ -62,6 +62,13 @@ It uses other technologies such as:
                 Zod
             </a>
         </td>
+        <td align="center" margin= "0 20px 0 20px">
+            <a href="https://fakerjs.dev/">
+                <img src="https://raw.githubusercontent.com/R4Y-repo/web_services_project/master/img/logos/faker.png" alt="Zod logo" width="100">
+                <br>
+                Faker
+            </a>
+        </td>
     </tr>
 </table>
 
