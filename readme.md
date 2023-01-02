@@ -1,49 +1,80 @@
-# Web Service Project
+<h1 align="center">Welcome to Web Service Project 👋</h1>
 
-This is a web service project built using the following stack:
+> Web services project for course IT 325 Web services
 
-<div style="display: flex; justify-content: center; flex-wrap: wrap;">
-  <div style="display: flex; flex-direction: column; align-items: center; margin: 0 20px 0 20px;">
-    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/4/4c/Typescript_logo_2020.svg/1200px-Typescript_logo_2020.svg.png" alt="TypeScript logo" width="100">
-    <br>
-    TypeScript
-  </div>
-  <div style="display: flex; flex-direction: column; align-items: center; margin: 0 20px 0 20px;">
-    <img src="https://github.com/openjs-foundation/artwork/blob/main/projects/fastify/fastify-logo-stacked-white-dark_background.png?raw=true" alt="Fastify logo" width="100">
-    <br>
-    Fastify
-  </div>
-  <div style="display: flex; flex-direction: column; align-items: center; margin: 0 20px 0 20px;">
-    <img src="https://res.cloudinary.com/practicaldev/image/fetch/s--6LfYwHeK--/c_fill,f_auto,fl_progressive,h_320,q_auto,w_320/https://dev-to-uploads.s3.amazonaws.com/uploads/organization/profile_image/1608/0f93b179-76bf-4ee7-a838-e8222fbef062.png" alt="Prisma logo" width="100">
-    <br>
-    Prisma
-  </div>
-  <div style="display: flex; flex-direction: column; align-items: center;  margin: 0 20px 0 20px;">
-    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/29/Postgresql_elephant.svg/800px-Postgresql_elephant.svg.png" width="100">
-    <br>
-    PostgreSQL
-  </div>
-</div>
+This is a Web Service project built using the following stack:
 
-## Getting Started
+<table >
+    <tr>
+        <td style="align-content: center; margin: 0 20px 0 20px;">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/4/4c/Typescript_logo_2020.svg/1200px-Typescript_logo_2020.svg.png" alt="TypeScript logo" width="100">
+            <br>
+            TypeScript
+        </td>
+        <td style="align-content: center; margin: 0 20px 0 20px;">
+            <img src="https://github.com/openjs-foundation/artwork/blob/main/projects/fastify/fastify-logo-stacked-white-dark_background.png?raw=true" alt="Fastify logo" width="100">
+            <br>
+            Fastify
+        </td>
+        <td style="align-content: center; margin: 0 20px 0 20px;">
+            <img src="https://res.cloudinary.com/practicaldev/image/fetch/s--6LfYwHeK--/c_fill,f_auto,fl_progressive,h_320,q_auto,w_320/https://dev-to-uploads.s3.amazonaws.com/uploads/organization/profile_image/1608/0f93b179-76bf-4ee7-a838-e8222fbef062.png" alt="Prisma logo" width="100">
+            <br>
+            Prisma
+        </td>
+        <td style="align-content: center;  margin: 0 20px 0 20px;">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/29/Postgresql_elephant.svg/800px-Postgresql_elephant.svg.png" width="100">
+            <br>
+            PostgreSQL
+        </td>
+    </tr>
+</table>
 
-To get started with this project, follow these steps:
+## License
 
-1. Clone the repository to your local machine:
+This project is licensed under the ISC License.
 
-`git clone https://github.com/your-username/web_services_project.git`
+<p>
+  <img alt="Version" src="https://img.shields.io/badge/version-1.0.0-blue.svg?cacheSeconds=2592000" />
+  <a href="https://github.com/R4Y-repo/web_services_project#readme" target="_blank">
+    <img alt="Documentation" src="https://img.shields.io/badge/documentation-yes-brightgreen.svg" />
+  </a>
+  <a href="https://github.com/R4Y-repo/web_services_project/graphs/commit-activity" target="_blank">
+    <img alt="Maintenance" src="https://img.shields.io/badge/Maintained%3F-yes-green.svg" />
+  </a>
+  <a href="#" target="_blank">
+    <img alt="License: ISC" src="https://img.shields.io/github/license/R4Y-repo/Web Service Project" />
+  </a>
+</p>
 
-2. Navigate to the project directory:
 
-`cd web_services_project`
+### 🏠 [Homepage](https://github.com/R4Y-repo/web_services_project#readme)
 
-3. Install the dependencies:
+## Install
 
-`npm install`
+```sh
+npm install
+```
 
-4. Start the development server:
+## Usage
 
-`npm run dev`
+```sh
+npm run start
+```
+
+## Run tests
+
+```sh
+npm run dev
+```
+
+## Available Scripts
+
+- `start`: Start the production server
+- `dev`: Start the development server
+- `mig`: Run Prisma migrations
+- `gen`: Generate Prisma client
+- `studio`: Start Prisma Studio
+- `faker`: Generate fake data using Faker
 
 ## Checking the Swagger Documentation in the API
 
@@ -51,7 +82,9 @@ To check the Swagger documentation for this project's API, follow these steps:
 
 1. Start the development server:
 
-`npm run dev`
+```sh 
+npm run dev
+```
 
 2. Navigate to the Swagger documentation page in your web browser:
 
@@ -69,16 +102,17 @@ In addition to generating API documentation, Swagger also provides several other
 
 To learn more about what Swagger can do for you, check out the [Swagger website](https://swagger.io/).
 
+## Author
 
-## Available Scripts
+👤 **Rayen Nasraoui**
 
-- `start`: Start the production server
-- `dev`: Start the development server
-- `mig`: Run Prisma migrations
-- `gen`: Generate Prisma client
-- `studio`: Start Prisma Studio
-- `faker`: Generate fake data using Faker
+* Website: https://r4y-repo.github.io/
+* Github: [@R4Y-repo](https://github.com/R4Y-repo)
+* LinkedIn: [@https:\/\/www.linkedin.com\/in\/rayen-nasraoui-603b22203\/](https://linkedin.com/in/https:\/\/www.linkedin.com\/in\/rayen-nasraoui-603b22203\/)
 
-## License
+## Show your support
 
-This project is licensed under the ISC License.
+Give a ⭐️ if this project helped you!
+
+***
+_This README was generated with ❤️ by [readme-md-generator](https://github.com/kefranabg/readme-md-generator)_
