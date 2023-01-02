@@ -1,13 +1,13 @@
 import { z } from "zod";
 
-const getAccountSingleSchema = z.object({
+const accountSingleSchema = z.object({
     id: z.string({
         required_error: 'Name is required',
         invalid_type_error: 'Name must be a string',
     }),
 })
 
-export type GetAccountSingleInput = z.infer<typeof getAccountSingleSchema>
+export type AccountSingleInput = z.infer<typeof accountSingleSchema>
 
 const buyServiceAccountSchema =  z.object({
     id: z.string({
@@ -36,3 +36,11 @@ const createAccountSchema = z.object({
 
 export type CreateAccountInput = z.infer<typeof createAccountSchema>
 
+const getPaginationSchema = z.object({
+    page: z.number({
+        required_error: 'Page is required',
+        invalid_type_error: 'Page must be a number',
+    })
+})
+
+export type GetPaginationInput = z.infer<typeof getPaginationSchema>

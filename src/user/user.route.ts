@@ -17,7 +17,7 @@ export default async function UserRoutes(server: FastifyInstance) {
     },registerUserHandler)
     server.post("/signin",{
         schema:{
-            description:"Refresh access and refresh tokens",
+            description:"Sign in user and give the access and refresh tokens",
             body: $ref("loginSchema"),
             response:{
                 201: $ref("loginResponseSchema")
@@ -26,9 +26,9 @@ export default async function UserRoutes(server: FastifyInstance) {
         }
     },SignInUserHandler)
     server.put("/refresh",{
-        preHandler:[server.authenticate],
         schema:{
             description:"Refresh access and refresh tokens",
+            body: $ref("refreshSchema"),
             response:{
                 201: $ref("loginResponseSchema")
             },
@@ -43,11 +43,6 @@ export default async function UserRoutes(server: FastifyInstance) {
             response:{
                 201: $ref("createUserResponseSchema")
             },
-            security: [
-                {
-                  "accessToken": []
-                }
-            ],
             tags: ["User"],
         }
     },UpdateUserHandler)

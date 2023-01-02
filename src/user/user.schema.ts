@@ -19,11 +19,13 @@ const createUserSchema = z.object({
   }),
 });
 
+const refreshSchema = z.object({
+  refreshToken: z.string()
+})
+
 const createUserResponseSchema = z.object({
   id: z.string(),
   ...userCore,
-  accessToken: z.string(),
-  refreshToken: z.string()
 });
 
 const loginSchema = z.object({
@@ -42,14 +44,16 @@ const loginResponseSchema = z.object({
 });
 
 const updateUserSchema = z.object({
-    email: z.optional(z.string().email()),
-    password: z.optional(z.string().email()),
+    email: z.string().email().optional(),
+    password: z.string().optional(),
+    currentEmail: z.string().email().optional(),
+    currentPassword: z.string().optional(),
 })
 
 const updateUserResponseSchema = z.object({
   id: z.string(),
-  email: z.optional(z.string().email()),
-  password: z.optional(z.string().email()),
+  email: z.string().email().optional(),
+  password: z.string().email().optional(),
 })
 
 export type UpdateUserInput = z.infer<typeof updateUserSchema>
@@ -58,11 +62,14 @@ export type RegisterUserInput = z.infer<typeof createUserSchema>;
 
 export type SigninUserInput = z.infer<typeof loginSchema>;
 
+export type RefreshInput = z.infer<typeof refreshSchema>
+
 export const { schemas: userSchemas, $ref } = buildJsonSchemas({
   createUserSchema,
   createUserResponseSchema,
   loginSchema,
   loginResponseSchema,
   updateUserRequestSchema: updateUserSchema,
-  updateUserResponseSchema
+  updateUserResponseSchema,
+  refreshSchema
 });

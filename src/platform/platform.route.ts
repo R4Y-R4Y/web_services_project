@@ -4,26 +4,33 @@ import { $ref } from "../user/user.schema";
 
 
 export default async function PlatformRoutes(server: FastifyInstance) {
-    server.get("/many",{
+    server.get("/many/:name/:page",{
         preHandler: [server.authenticate],
         schema:{
-            description:"Get user's accounts",
+            description:"Get a list of platforms",
             response:{
                 201: $ref("createUserResponseSchema")
             },
-            tags: ["User"]
+            tags: ["Platform"]
         }
     },GetPlatformMultipleHandler)
-    server.get("/one",{
-        preHandler: [server.authenticate]
+    server.get("/one/:name",{
+        preHandler: [server.authenticate],
+        schema:{
+            description:"Get a single platform that contains the name that you want",
+            response:{
+                201: $ref("createUserResponseSchema")
+            },
+            tags: ["Platform"]
+        }
     },GetPlatformSingleHandler)
-    server.get("/service",{
+    server.get("/service-platform/:name",{
         preHandler: [server.authenticate]
     },GetServicePlatformHandler)
-    server.get("/service/many",{
+    server.get("/service/many/:name/:page",{
         preHandler: [server.authenticate]
     },GetServiceMultipleHandler)
-    server.get("/service/one",{
+    server.get("/service/one/:name",{
         preHandler: [server.authenticate]
-    },GetServiceMultipleHandler)
+    },GetServiceSingleHandler)
 }

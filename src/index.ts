@@ -9,6 +9,7 @@ import PlatformRoutes from "./platform/platform.route"
 import {version} from "../package.json" 
 import swagger from "@fastify/swagger"
 import { withRefResolver } from "fastify-zod"
+import prisma from "./utils/prisma"
 dotenv.config()
 
 // changed class structure to use my custom function and parameters for jwt
@@ -36,17 +37,15 @@ async function main() {
     routePrefix: "/documentation",
     exposeRoute: true,
     staticCSP: true,
-    swagger: {
-      securityDefinitions:{
-        accessToken: {
-          type: "apiKey",
-          name: 'Access Token',
-          in: 'header'
-        },
-        refreshToken:{
-          type: "apiKey",
-          name: 'Refresh Token',
-          in: 'header'
+    openapi: {
+      security:[{bearerAuth:[]}],
+      components:{
+        securitySchemes:{
+          bearerAuth:{
+            type: "http",
+            scheme: "bearer",
+            bearerFormat: "JWT"
+          }
         }
       },
       info:{
@@ -98,8 +97,16 @@ async function main() {
   server.decorate("authenticate",
     async (request: FastifyRequest, reply: FastifyReply) => {
       try {
-        
-        return await request.jwtVerify();
+        if(!request.headers.authorization && !request.headers.authorization?.startsWith('Bearer '))  reply.code(401).send({message: "There's no bearer token. Please add a bearer token"})
+        const token = await request.jwtVerify()
+        if(!(token as {session_id: string}).session_id)  reply.code(401).send({message: 'No session value'})
+        if(!(token as {access: boolean}).access) reply.code(401).send({message: 'This is not an access token'})      
+        const session = await prisma.session.findUnique({
+          where:{id: (token as {session_id: string}).session_id}
+        })
+        console.log(session)
+        if(!session) throw {message: "There's no valid session in the token"}
+        return token
       } catch (e) {
         return reply.send(e);
       }
