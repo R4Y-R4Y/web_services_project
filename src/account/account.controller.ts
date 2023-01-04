@@ -1,14 +1,16 @@
 import { FastifyReply } from "fastify/types/reply";
 import { FastifyRequest } from "fastify/types/request";
 import prisma, { pageCount } from "../utils/prisma";
-import { BuyServiceAccountInput, CreateAccountInput, AccountSingleInput, GetPaginationInput } from "./account.schema";
+import { BuyServiceAccountInput, CreateAccountInput, AccountSingleInput, GetPaginationInput, AccountPaginationInput } from "./account.schema";
 
 
 export async function GetAccountMultipleHandler(request: FastifyRequest<{Params: GetPaginationInput}>, reply:FastifyReply) {
     try {
         const {user_id} = request.user as {user_id: string}
+        const {page} = request.params
         const data = await prisma.account.findMany({
             where:{owner_id: user_id},
+            skip: pageCount*page,
             take: pageCount,
 
         })
@@ -19,9 +21,19 @@ export async function GetAccountMultipleHandler(request: FastifyRequest<{Params:
     }    
 }
 
-export async function GetTransactionMultipleHandler(request: FastifyRequest, reply:FastifyReply) {
+export async function GetTransactionMultipleHandler(request: FastifyRequest<{Params: AccountPaginationInput}>, reply:FastifyReply) {
     try {
-        
+        const {user_id} = request.user as {user_id: string}
+        const {name,page} = request.params
+        const data = await prisma.transaction.findMany({
+            where:{
+                payer_id: user_id
+                
+            },
+            take: pageCount,
+
+        })
+        reply.code(200).send(data)
     } catch (error) {
         
     }

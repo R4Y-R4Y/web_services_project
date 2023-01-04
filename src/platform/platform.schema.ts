@@ -1,5 +1,5 @@
+import { buildJsonSchemas } from "fastify-zod";
 import { z } from "zod";
-
 
 const getContentSchema = z.object({
     name: z.string({
@@ -19,6 +19,36 @@ const getContentPaginationSchema = z.object({
     })
 })
 
+const getPlatformUniqueResponse = z.object({
+    id: z.string(),
+    name: z.string(),
+    link: z.string(),
+    description: z.string(),
+    services: z.object({}),
+})
+
+const getServiceUniqueResponse = z.object({
+    id: z.string(),
+    name: z.string(),
+    description: z.string(),
+    price: z.number(),
+    platform_id: z.string(),
+    platform: z.object({}),
+})
+
+const getPlatformListResponse = z.array(getPlatformUniqueResponse)
+
+const getServiceMultipleResponse = z.array(getServiceUniqueResponse)
+
 export type GetContentPaginationInput = z.infer<typeof getContentPaginationSchema>
 
 export type GetContentInput = z.infer<typeof getContentSchema>
+
+export const { schemas: platformSchemas, $ref } = buildJsonSchemas({
+    getContentSchema,
+    getContentPaginationSchema,
+    getPlatformListResponse,
+    getPlatformUniqueResponse,
+    getServiceMultipleResponse,
+    getServiceUniqueResponse
+},{$id: "Platform"});

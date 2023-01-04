@@ -10,6 +10,8 @@ import {version} from "../package.json"
 import swagger from "@fastify/swagger"
 import { withRefResolver } from "fastify-zod"
 import prisma from "./utils/prisma"
+import { platformSchemas } from "./platform/platform.schema"
+import { accountSchemas } from "./account/account.schema"
 dotenv.config()
 
 // changed class structure to use my custom function and parameters for jwt
@@ -38,10 +40,10 @@ async function main() {
     exposeRoute: true,
     staticCSP: true,
     openapi: {
-      security:[{bearerAuth:[]}],
+      security:[{authorizationToken:[]}],
       components:{
         securitySchemes:{
-          bearerAuth:{
+          authorizationToken:{
             type: "http",
             scheme: "bearer",
             bearerFormat: "JWT"
@@ -59,13 +61,14 @@ async function main() {
           description: "Everything about the User"
         },
         {
+          name: "Platform",
+          description: "Access Platform's informations and their services"
+        },
+        {
           name: "Account",
           description: "Access the user's accounts and do transactions"
         },
-        {
-          name: "Platform",
-          description: "Access Platform's informations and their services"
-        }
+
       ]
     },
   }))
@@ -87,7 +90,7 @@ async function main() {
     staticCSP: true,
     transformStaticCSP: (header) => header,
   })
-  for (const schema of [...userSchemas]) {
+  for (const schema of [...userSchemas, ...platformSchemas, ...accountSchemas]) {
     server.addSchema(schema);
   }
   server.register(UserRoutes,{prefix:'api/user'})
@@ -99,10 +102,11 @@ async function main() {
       try {
         if(!request.headers.authorization && !request.headers.authorization?.startsWith('Bearer '))  reply.code(401).send({message: "There's no bearer token. Please add a bearer token"})
         const token = await request.jwtVerify()
-        if(!(token as {session_id: string}).session_id)  reply.code(401).send({message: 'No session value'})
+        console.log(token)
+        if(!(token as {id: string}).id)  reply.code(401).send({message: 'No session value'})
         if(!(token as {access: boolean}).access) reply.code(401).send({message: 'This is not an access token'})      
         const session = await prisma.session.findUnique({
-          where:{id: (token as {session_id: string}).session_id}
+          where:{id: (token as {id: string}).id}
         })
         console.log(session)
         if(!session) throw {message: "There's no valid session in the token"}

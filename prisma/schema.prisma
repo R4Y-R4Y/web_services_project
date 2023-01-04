@@ -28,7 +28,6 @@ model Session {
   id      String  @id @unique @default(uuid()) @db.Uuid
   user    User    @relation(fields: [user_id], references: [id])
   user_id String  @unique @db.Uuid
-  valid   Boolean
 }
 
 // Account schema

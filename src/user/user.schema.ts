@@ -8,7 +8,8 @@ const userCore = {
       invalid_type_error: "Email must be a string",
     })
     .email(),
-  name: z.string(),
+  name: z.string().min(5,"Must be 5 or more characters long").regex(new RegExp("^[a-zA-Z0-9]+$"))
+  // Alphanumeric regex
 };
 
 const createUserSchema = z.object({
@@ -16,7 +17,7 @@ const createUserSchema = z.object({
   password: z.string({
     required_error: "Password is required",
     invalid_type_error: "Password must be a string",
-  }),
+  }).min(5,),
 });
 
 const refreshSchema = z.object({
@@ -28,7 +29,7 @@ const createUserResponseSchema = z.object({
   ...userCore,
 });
 
-const loginSchema = z.object({
+const loginRequestSchema = z.object({
   email: z
     .string({
       required_error: "Email is required",
@@ -43,11 +44,12 @@ const loginResponseSchema = z.object({
   refreshToken: z.string(),
 });
 
-const updateUserSchema = z.object({
+const updateUserRequestSchema = z.object({
     email: z.string().email().optional(),
     password: z.string().optional(),
     currentEmail: z.string().email().optional(),
-    currentPassword: z.string().optional(),
+    currentPassword: z.string().min(5,"Must be 5 or more characters long").optional(),
+    name: z.string().regex(new RegExp("^[a-zA-Z0-9]+$")).optional()
 })
 
 const updateUserResponseSchema = z.object({
@@ -56,20 +58,22 @@ const updateUserResponseSchema = z.object({
   password: z.string().email().optional(),
 })
 
-export type UpdateUserInput = z.infer<typeof updateUserSchema>
+
+
+export type UpdateUserInput = z.infer<typeof updateUserRequestSchema>
 
 export type RegisterUserInput = z.infer<typeof createUserSchema>;
 
-export type SigninUserInput = z.infer<typeof loginSchema>;
+export type SigninUserInput = z.infer<typeof loginRequestSchema>;
 
 export type RefreshInput = z.infer<typeof refreshSchema>
 
 export const { schemas: userSchemas, $ref } = buildJsonSchemas({
   createUserSchema,
   createUserResponseSchema,
-  loginSchema,
+  loginRequestSchema,
   loginResponseSchema,
-  updateUserRequestSchema: updateUserSchema,
+  updateUserRequestSchema,
   updateUserResponseSchema,
   refreshSchema
-});
+},{$id: "User"});

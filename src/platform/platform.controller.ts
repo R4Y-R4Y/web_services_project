@@ -20,8 +20,8 @@ export async function GetPlatformMultipleHandler(request: FastifyRequest<{Params
         return reply.code(500).send(error)
     }
 }
-export async function GetPlatformSingleHandler(request: FastifyRequest<{Body: GetContentInput}>, reply:FastifyReply) {
-    const {name} = request.body
+export async function GetPlatformSingleHandler(request: FastifyRequest<{Params: GetContentInput}>, reply:FastifyReply) {
+    const {name} = request.params
     try {
         const data = await prisma.platform.findFirst({
             where:{ 
@@ -52,8 +52,8 @@ export async function GetServiceMultipleHandler(request: FastifyRequest<{Params:
     }
 }
 
-export async function GetServiceSingleHandler(request: FastifyRequest<{Body: GetContentInput}>, reply:FastifyReply) {
-    const body = request.body
+export async function GetServiceSingleHandler(request: FastifyRequest<{Params: GetContentInput}>, reply:FastifyReply) {
+    const body = request.params
     try {
         const data = await prisma.service.findFirst({
             where:{ 

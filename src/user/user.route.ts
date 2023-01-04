@@ -8,7 +8,8 @@ export default async function UserRoutes(server: FastifyInstance) {
     server.post("/register",{
         schema:{
             description:"Register a user to our platform",
-            body: $ref("createUserSchema"),
+            body: $ref("createUserSchema"),            
+            security:[],
             response:{
                 201: $ref("createUserResponseSchema")
             },
@@ -18,7 +19,7 @@ export default async function UserRoutes(server: FastifyInstance) {
     server.post("/signin",{
         schema:{
             description:"Sign in user and give the access and refresh tokens",
-            body: $ref("loginSchema"),
+            body: $ref("loginRequestSchema"),
             security:[],
             response:{
                 201: $ref("loginResponseSchema")
@@ -41,7 +42,7 @@ export default async function UserRoutes(server: FastifyInstance) {
         preHandler:[server.authenticate],
         schema:{
             description:"Update user credentials",
-            body: $ref("createUserSchema"),
+            body: $ref("updateUserRequestSchema"),
             response:{
                 201: $ref("createUserResponseSchema")
             },
@@ -53,7 +54,7 @@ export default async function UserRoutes(server: FastifyInstance) {
         schema:{
             description:"Get user's accounts",
             response:{
-                201: $ref("updateUserResponseSchema")
+                201: $ref("createUserResponseSchema")
             },
             tags: ["User"]
         }
