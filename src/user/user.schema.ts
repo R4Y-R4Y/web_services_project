@@ -1,19 +1,14 @@
 import { z } from "zod";
 import { buildJsonSchemas } from "fastify-zod";
 
-const userCore = {
+const createUserSchema = z.object({
   email: z
     .string({
       required_error: "Email is required",
       invalid_type_error: "Email must be a string",
     })
     .email(),
-  name: z.string().min(5,"Must be 5 or more characters long").regex(new RegExp("^[a-zA-Z0-9]+$"))
-  // Alphanumeric regex
-};
-
-const createUserSchema = z.object({
-  ...userCore,
+  name: z.string().min(5,"Must be 5 or more characters long").regex(new RegExp("^[a-zA-Z0-9]+$"), "Must be alphanumeric"),
   password: z.string({
     required_error: "Password is required",
     invalid_type_error: "Password must be a string",
@@ -26,7 +21,13 @@ const refreshSchema = z.object({
 
 const createUserResponseSchema = z.object({
   id: z.string(),
-  ...userCore,
+  email: z
+    .string({
+      required_error: "Email is required",
+      invalid_type_error: "Email must be a string",
+    })
+    .email(),
+  name: z.string().min(5,"Must be 5 or more characters long").regex(new RegExp("^[a-zA-Z0-9]+$"), "Must be alphanumeric"),
 });
 
 const loginRequestSchema = z.object({
@@ -46,8 +47,8 @@ const loginResponseSchema = z.object({
 
 const updateUserRequestSchema = z.object({
     email: z.string().email().optional(),
-    password: z.string().optional(),
     currentEmail: z.string().email().optional(),
+    password: z.string().optional(),
     currentPassword: z.string().min(5,"Must be 5 or more characters long").optional(),
     name: z.string().regex(new RegExp("^[a-zA-Z0-9]+$")).optional()
 })
@@ -55,7 +56,7 @@ const updateUserRequestSchema = z.object({
 const updateUserResponseSchema = z.object({
   id: z.string(),
   email: z.string().email().optional(),
-  password: z.string().email().optional(),
+  password: z.string().optional(),
 })
 
 
@@ -76,4 +77,4 @@ export const { schemas: userSchemas, $ref } = buildJsonSchemas({
   updateUserRequestSchema,
   updateUserResponseSchema,
   refreshSchema
-},{$id: "User"});
+},{$id: "User", target:'openApi3'});

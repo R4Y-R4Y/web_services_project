@@ -28,8 +28,8 @@ export const server = Fastify({
   logger: true
 })
 
-server.get("/healthcheck",()=>{
-  return{status:"ok"}
+server.get("/ping",()=>{
+  return{pong:"pong!"}
 })
 
 async function main() {
@@ -102,13 +102,11 @@ async function main() {
       try {
         if(!request.headers.authorization && !request.headers.authorization?.startsWith('Bearer '))  reply.code(401).send({message: "There's no bearer token. Please add a bearer token"})
         const token = await request.jwtVerify()
-        console.log(token)
         if(!(token as {id: string}).id)  reply.code(401).send({message: 'No session value'})
         if(!(token as {access: boolean}).access) reply.code(401).send({message: 'This is not an access token'})      
         const session = await prisma.session.findUnique({
           where:{id: (token as {id: string}).id}
         })
-        console.log(session)
         if(!session) throw {message: "There's no valid session in the token"}
         return token
       } catch (e) {

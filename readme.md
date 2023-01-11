@@ -72,6 +72,7 @@ It uses other technologies such as:
     </tr>
 </table>
 
+
 <p>
   <img alt="Version" src="https://img.shields.io/badge/version-1.0.0-blue.svg?cacheSeconds=2592000" />
   <a href="https://github.com/R4Y-repo/web_services_project#readme" target="_blank">
@@ -82,6 +83,8 @@ It uses other technologies such as:
   </a>
 </p>
 
+## Entity Relationship Diagram
+<img src="https://raw.githubusercontent.com/R4Y-repo/web_services_project/master/img/erd.png" alt="Entity Relationship Diagram">
 
 ### 🏠 [Homepage](https://github.com/R4Y-repo/web_services_project#readme)
 

@@ -25,7 +25,7 @@ export default async function PlatformRoutes(server: FastifyInstance) {
             tags: ["Platform"]
         }
     },GetPlatformSingleHandler)
-    server.get("/service-platform/:name",{
+    server.get("/service-platform/:name/:page",{
         preHandler: [server.authenticate],
         schema:{
             description:"Get the services of a platform that you want to find",

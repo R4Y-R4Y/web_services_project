@@ -136,6 +136,7 @@ export async function UpdateUserHandler(request: FastifyRequest<{Body: UpdateUse
                 where:{id: user_id},
                 data:{name}
             })
+            change = true
         }
         if(change) {
             const user = await prisma.user.findUnique({
@@ -148,7 +149,7 @@ export async function UpdateUserHandler(request: FastifyRequest<{Body: UpdateUse
                     name: true,
                 },
             })
-            reply.code(200).send({message: "Successfully changed email"})
+            reply.code(200).send(user)
         }
         reply.code(400).send({message: "Please fill in some of the information"})
     } catch (error) {
@@ -159,7 +160,6 @@ export async function UpdateUserHandler(request: FastifyRequest<{Body: UpdateUse
 export async function GetUserHandler(request: FastifyRequest<any>, reply: FastifyReply) {
     try {
         const { user_id } = await request.user as { user_id: string }
-        console.log(user_id)
         const result = await prisma.user.findUnique({
             where:{
                 id: user_id

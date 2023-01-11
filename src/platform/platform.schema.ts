@@ -51,4 +51,4 @@ export const { schemas: platformSchemas, $ref } = buildJsonSchemas({
     getPlatformUniqueResponse,
     getServiceMultipleResponse,
     getServiceUniqueResponse
-},{$id: "Platform"});
+},{$id: "Platform", target:'openApi3'});

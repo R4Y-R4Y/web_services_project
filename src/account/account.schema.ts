@@ -89,4 +89,4 @@ export const { schemas: accountSchemas, $ref } = buildJsonSchemas({
     getAccountMultipleResponseSchema,
     getAccountSingleResponseSchema,
     getTransactionMultipleResponseSchema
-},{$id: "Account"});
+},{$id: "Account", target:'openApi3'});

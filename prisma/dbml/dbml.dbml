@@ -1,0 +1,84 @@
+//// ------------------------------------------------------
+//// THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
+//// ------------------------------------------------------
+
+Project "Database Entity Relationship Diagram for Money Management and Budgeting API" {
+  database_type: 'PostgreSQL'
+  Note: 'Entity relationship diagram for database visualization'
+}
+
+Table User {
+  id String [pk, unique]
+  email String [unique, not null]
+  name String [not null]
+  password String [not null]
+  accounts Account [not null]
+  session Session
+}
+
+Table Session {
+  id String [pk, unique]
+  user User [not null]
+  user_id String [unique, not null]
+}
+
+Table Account {
+  id String [pk, unique]
+  balance Float [not null]
+  payer_transaction Transaction [not null]
+  payer_payment Payment [not null]
+  reciever Transaction [not null]
+  owner_id String [not null]
+  owner User [not null]
+}
+
+Table Platform {
+  id String [pk, unique]
+  name String [not null]
+  link String [not null]
+  description String
+  service Service [not null]
+  accountId String [not null]
+}
+
+Table Service {
+  id String [pk, unique]
+  name String [not null]
+  description String
+  price Float [not null]
+  payment Payment [not null]
+  platform_id String [not null]
+  platform Platform [not null]
+}
+
+Table Transaction {
+  id String [pk, unique]
+  payment Float [not null]
+  payer_transaction Account [not null]
+  payer_transaction_id String [not null]
+  reciever_transaction_id String [not null]
+  reciever_transaction Account [not null]
+}
+
+Table Payment {
+  id String [pk, unique]
+  payment Float [not null]
+  payer_payment Account [not null]
+  payer_payment_id String [not null]
+  reciever_payment_id String [not null]
+  reciever_payment Service [not null]
+}
+
+Ref: Session.user_id - User.id
+
+Ref: Account.owner_id > User.id
+
+Ref: Service.platform_id > Platform.id
+
+Ref: Transaction.payer_transaction_id > Account.id
+
+Ref: Transaction.reciever_transaction_id > Account.id
+
+Ref: Payment.payer_payment_id > Account.id
+
+Ref: Payment.reciever_payment_id > Service.id

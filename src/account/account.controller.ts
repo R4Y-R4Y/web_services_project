@@ -8,11 +8,13 @@ export async function GetAccountMultipleHandler(request: FastifyRequest<{Params:
     try {
         const {user_id} = request.user as {user_id: string}
         const {page} = request.params
+        const count = await prisma.account.count({
+            where:{owner_id: user_id},
+        })
         const data = await prisma.account.findMany({
             where:{owner_id: user_id},
             skip: pageCount*page,
-            take: pageCount,
-
+            take: count/(pageCount*page + pageCount) > 1 ? pageCount : count % pageCount,
         })
         reply.code(200).send(data)
 
@@ -24,14 +26,18 @@ export async function GetAccountMultipleHandler(request: FastifyRequest<{Params:
 export async function GetTransactionMultipleHandler(request: FastifyRequest<{Params: AccountPaginationInput}>, reply:FastifyReply) {
     try {
         const {user_id} = request.user as {user_id: string}
-        const {name,page} = request.params
+        const {page} = request.params
+        const count = await prisma.transaction.count({where:{payer_id: user_id}})
         const data = await prisma.transaction.findMany({
             where:{
                 payer_id: user_id
-                
             },
-            take: pageCount,
-
+            include:{
+                payer: true,
+                reciever: true,
+            },
+            skip: pageCount*page,
+            take: count/(pageCount*page + pageCount) > 1 ? pageCount : count % pageCount,
         })
         reply.code(200).send(data)
     } catch (error) {
@@ -84,20 +90,24 @@ export async function BuyServiceAccountHandler(request: FastifyRequest<{Body: Bu
                 id: accountId
             }
         })
-        if(!data) return reply.code(204).send({message: "There's no account that exists with this id for the current user"})
+        if(!data) return reply.code(204).send({message: "There's no account that exists with this id owned by current user"})
         const newBalance = data.balance - service.price
         if(newBalance < 0) return reply.code(400).send({message: "Budget is insufficient to buy the desired service"})
-        await prisma.account.update({
-            where:{id: accountId},
-            data:{balance: newBalance}
-        })
-        const transaction = prisma.transaction.create({
-            data:{
-                payment: service.price,
-                payer_id: accountId,
-                reciever_id: serviceId
-            }
-        })
+        // to follow ATOMIC principal (either the entire transaction is succeed or fail as a whole 
+        // (customer's transactions are cruicial)
+        const [account,transaction] = await prisma.$transaction([
+            prisma.account.update({
+                where:{id: accountId},
+                data:{balance: newBalance}
+            }),
+            prisma.transaction.create({
+                data:{
+                    payment: service.price,
+                    payer_id: accountId,
+                    reciever_id: serviceId
+                }
+            })
+        ])
         return reply.code(201).send(transaction)
     } catch (error) {
         return reply.code(500).send(error)
