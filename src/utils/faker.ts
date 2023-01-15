@@ -33,7 +33,7 @@ async function getPlatformIds() {
         take:100
     })
     const idArray: string[] = request.map(item => item.id);
-    console.log(idArray)
+    return(idArray)
 }
 
 // getPlatformIds()
