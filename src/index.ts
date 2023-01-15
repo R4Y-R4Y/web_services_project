@@ -55,7 +55,7 @@ async function main() {
         }
       },
       info:{
-        title:"Money saving and Budgeting API",
+        title:"Subscriptions & Transactions Tracking API System",
         description:"This money saving API is designed to help users manage their finances and make smarter decisions about how to save and spend their money. With the API, users can connect their bank accounts and credit cards, and track their spending in real-time. The API also offers budgeting tools and allows users to buy services from platforms. Additionally, the API provides suggestions for how to save and invest for the long term.",
         version 
       },

@@ -59,11 +59,11 @@ export default async function AccountRoutes(server: FastifyInstance) {
             tags: ["Account"]
         }
     },TransferMoneyAccountHandler)
-    server.put("/deposit/:amount",{
+    server.put("/deposit/:accountId/:deposit",{
         preHandler: [server.authenticate],
         schema:{
             description:"Deposit a specific amount of money to one of your accounts",
-            params:$ref("accountSingleRequestSchema"),
+            params:$ref("addDepositRequestSchema"),
             tags: ["Account"]
         }
     },DepositAccountHandler)

@@ -38,12 +38,12 @@ export type BuyServiceAccountInput = z.infer<typeof buyServiceAccountRequestSche
 
 const transferMoneyAccountRequestSchema = z.object({
     account_reciever_id: z.string({
-        required_error: 'Account ID is required',
-        invalid_type_error: 'Account ID must be a string',
+        required_error: 'Reciever Account ID is required',
+        invalid_type_error: 'Reciever Account ID must be a string',
     }),
     account_sender_id: z.string({
-        required_error: 'Account ID is required',
-        invalid_type_error: 'Account ID must be a string',
+        required_error: 'Sender Account ID is required',
+        invalid_type_error: 'Sender Account ID must be a string',
     }),
     payment: z.number({
         required_error: 'Payment is required',
@@ -61,6 +61,19 @@ const createAccountRequestSchema = z.object({
 })
 
 export type CreateAccountInput = z.infer<typeof createAccountRequestSchema>
+
+const addDepositRequestSchema = z.object({
+    deposit: z.number({
+        required_error: "Deposit is required",
+        invalid_type_error: "Deposit must be a number"
+    }),
+    accountId:z.string({
+        required_error: "Deposit is required",
+        invalid_type_error: "Deposit must be a string"
+    }),
+})
+
+export type AddDepositInput = z.infer<typeof addDepositRequestSchema>
 
 const getPaginationRequestSchema = z.object({
     page: z.number({
@@ -100,5 +113,6 @@ export const { schemas: accountSchemas, $ref } = buildJsonSchemas({
     getPaginationRequestSchema,
     getAccountMultipleResponseSchema,
     getAccountSingleResponseSchema,
-    getTransactionMultipleResponseSchema
+    getTransactionMultipleResponseSchema,
+    addDepositRequestSchema
 },{$id: "Account", target:'openApi3'});

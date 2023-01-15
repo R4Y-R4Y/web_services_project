@@ -1,7 +1,7 @@
 import { FastifyReply } from "fastify/types/reply";
 import { FastifyRequest } from "fastify/types/request";
 import prisma, { pageCount } from "../utils/prisma";
-import { BuyServiceAccountInput, CreateAccountInput, AccountSingleInput, GetPaginationInput, AccountPaginationInput, TransferMoneyAccountInput } from "./account.schema";
+import { BuyServiceAccountInput, CreateAccountInput, AccountSingleInput, GetPaginationInput, AccountPaginationInput, TransferMoneyAccountInput, AddDepositInput } from "./account.schema";
 
 
 export async function GetAccountMultipleHandler(request: FastifyRequest<{Params: GetPaginationInput}>, reply:FastifyReply) {
@@ -193,8 +193,30 @@ export async function BuyServiceAccountHandler(request: FastifyRequest<{Body: Bu
     
 }
 
-export async function DepositAccountHandler(request: FastifyRequest<{Params: AccountSingleInput}>, reply:FastifyReply) {
-    
+export async function DepositAccountHandler(request: FastifyRequest<{Params: AddDepositInput}>, reply:FastifyReply) {
+    try {
+        const {deposit, accountId} = request.params
+        const { user_id } = await request.user as { user_id: string }
+        const account = await prisma.account.findFirst({
+            where:{
+                owner_id: user_id,
+                id: accountId
+            }
+        })
+        console.log(account)
+        if(!account) return reply.code(404).send({message: "There's no account that exists with this id owned by current user"})
+        const {balance} = account
+        const newBalance = balance + deposit
+        const newAccount = await prisma.account.update({
+            where:{id: accountId},
+            data:{balance: newBalance}
+        })
+        return reply.code(201).send(newAccount)
+    } catch (error) {
+        console.log(error)
+        return reply.code(500).send(error)
+    }
+
 }
 
 export async function DeleteAccountHandler(request: FastifyRequest<{Params: AccountSingleInput}>, reply:FastifyReply) {
