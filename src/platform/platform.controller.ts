@@ -12,7 +12,8 @@ export async function GetPlatformMultipleHandler(request: FastifyRequest<{Params
                 name: {contains: name, mode:"insensitive"}
             }
         })
-        if(count < page * pageCount) reply.code(200).send({message:"No results found"})
+        console.log(count)
+        if(count < page * pageCount) reply.code(404).send({message:"No results in this page. Please check previous pages."})
         const data = await prisma.platform.findMany({
             where:{
                 name: {contains: name, mode:"insensitive"}
@@ -23,6 +24,7 @@ export async function GetPlatformMultipleHandler(request: FastifyRequest<{Params
         reply.code(200).send(data)
 
     } catch (error) {
+        console.log(error)
         return reply.code(500).send(error)
     }
 }
@@ -34,8 +36,10 @@ export async function GetPlatformSingleHandler(request: FastifyRequest<{Params: 
                 name: {contains: name, mode:"insensitive"}
             }
         })
+        if(!data) reply.code(404).send({message: "there's no result with the given name."})
         reply.code(200).send(data)
     } catch (error) {
+        console.log(error)
         return reply.code(500).send(error)
     }
 }
@@ -48,16 +52,20 @@ export async function GetServiceMultipleHandler(request: FastifyRequest<{Params:
                 name: {contains: name, mode:"insensitive"}
             }
         })
-        if(count < page * pageCount) reply.code(200).send({message:"Maximum Amount reached"})
+        if(count < page * pageCount) reply.code(404).send({message:"Maximum Amount reached. Please check previous pages."})
         const data = await prisma.service.findMany({
             where:{ 
                 name: {contains: name, mode:"insensitive"}
             },
             skip: pageCount*page,
-            take: count/(pageCount*page + pageCount) > 1 ? pageCount : count % pageCount
+            take: count/(pageCount*page + pageCount) > 1 ? pageCount : count % pageCount,
+            include:{
+                platform: true
+            },
         })
         reply.code(200).send(data)
     } catch (error) {
+        console.log(error)
         return reply.code(500).send(error)
     }
 }
@@ -68,10 +76,15 @@ export async function GetServiceSingleHandler(request: FastifyRequest<{Params: G
         const data = await prisma.service.findFirst({
             where:{ 
                 name: {contains: body.name, mode:"insensitive"}
+            },
+            include:{
+                platform: true
             }
         })
+        if(!data) reply.code(404).send({message: "There's no result with the given name in this."})
         reply.code(200).send(data)
     } catch (error) {
+        console.log(error)
         return reply.code(500).send(error)
     }
 }
@@ -87,7 +100,11 @@ export async function GetServicePlatformHandler(request: FastifyRequest<{Params:
             },
         })
         console.log(count)
-        const data = await prisma.service.findFirst({
+        console.log(count)
+        console.log(count)
+        console.log(count)
+        if(count < page * pageCount) reply.code(404).send({message:"Maximum Amount reached. Please check previous pages."})
+        const data = await prisma.service.findMany({
             where:{ 
                 platform:{
                     name:{contains: name, mode:"insensitive"}
@@ -101,6 +118,8 @@ export async function GetServicePlatformHandler(request: FastifyRequest<{Params:
         })
         reply.code(200).send(data)
     } catch (error) {
+        // @ts-ignore
+        console.log(error.message)
         return reply.code(500).send(error)
     }
 }

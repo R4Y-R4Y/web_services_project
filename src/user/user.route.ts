@@ -41,7 +41,7 @@ export default async function UserRoutes(server: FastifyInstance) {
     server.put("/refresh",{
         schema:{
             description:"Refresh access and refresh tokens",
-            params: $ref("refreshSchema"),
+            querystring: $ref("refreshSchema"),
             security:[],
             response:{
                 201: $ref("loginResponseSchema")

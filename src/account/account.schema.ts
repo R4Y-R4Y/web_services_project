@@ -25,23 +25,34 @@ export type AccountSingleInput = z.infer<typeof accountSingleRequestSchema>
 export type AccountMultipleInput = z.infer<typeof createAccountRequestSchema>
 
 const buyServiceAccountRequestSchema =  z.object({
-    id: z.string({
+    account_id: z.string({
         required_error: 'Account ID is required',
         invalid_type_error: 'Account ID must be a string',
     }),
-    service: z.string({
+    service_id: z.string({
         required_error: 'Service ID is required',
         invalid_type_error: 'Service ID must be a string',
     })
 })
-
 export type BuyServiceAccountInput = z.infer<typeof buyServiceAccountRequestSchema>
 
-const createAccountRequestSchema = z.object({
-    id: z.string({
-        required_error: 'User ID is required',
-        invalid_type_error: 'User ID must be a string',
+const transferMoneyAccountRequestSchema = z.object({
+    account_reciever_id: z.string({
+        required_error: 'Account ID is required',
+        invalid_type_error: 'Account ID must be a string',
     }),
+    account_sender_id: z.string({
+        required_error: 'Account ID is required',
+        invalid_type_error: 'Account ID must be a string',
+    }),
+    payment: z.number({
+        required_error: 'Payment is required',
+        invalid_type_error: 'Payment must be a number',
+    })
+})
+export type TransferMoneyAccountInput = z.infer<typeof transferMoneyAccountRequestSchema>
+
+const createAccountRequestSchema = z.object({
     balance: z.number({
         required_error: "Balance is required",
         invalid_type_error: "Balance must be a number"
@@ -84,6 +95,7 @@ export const { schemas: accountSchemas, $ref } = buildJsonSchemas({
     accountSingleRequestSchema,
     accountPaginationRequestSchema,
     createAccountRequestSchema,
+    transferMoneyAccountRequestSchema,
     buyServiceAccountRequestSchema,
     getPaginationRequestSchema,
     getAccountMultipleResponseSchema,

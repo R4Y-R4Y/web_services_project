@@ -76,6 +76,7 @@ export async function registerUserHandler(request :FastifyRequest<{Body: Registe
         }});
         reply.code(202).send(user)
     } catch (error) {
+        console.log(error)
         return reply.code(500).send(error)
     }
 }
@@ -114,6 +115,7 @@ export async function VerifyUserHandler(request: FastifyRequest<{Querystring: Ve
         }
         return reply.code(201).send(user)
     } catch (error) {
+        console.log(error)
         return reply.code(500).send(error)
     }
 }
@@ -152,15 +154,14 @@ export async function SignInUserHandler(request: FastifyRequest<{Body: SigninUse
             return reply.code(401).send({code:401 ,message: "Sign in failed. Your password or email is invalid."})
         }
     } catch(error) {
-        // @ts-ignore
-        console.log(error.message)
+        console.log(error)
         return reply.code(500).send(error)
     }
 }
 
-export async function RefreshUserHandler(request: FastifyRequest<{Body: RefreshInput}>, reply: FastifyReply) {
+export async function RefreshUserHandler(request: FastifyRequest<{Querystring: RefreshInput}>, reply: FastifyReply) {
     try {
-        const decoded : {id: string, user_id: string, refresh: boolean, iat: number, exp: number} = await server.jwt.verify(request.body.refreshToken)
+        const decoded : {id: string, user_id: string, refresh: boolean, iat: number, exp: number} = await server.jwt.verify(request.query.refreshToken)
         if(!decoded.refresh) return reply.code(400).send({message: "This is not a refresh token."})
         const {id, user_id} = decoded
         const session_db = await prisma.session.findUnique({
@@ -184,8 +185,7 @@ export async function RefreshUserHandler(request: FastifyRequest<{Body: RefreshI
         const refreshToken = server.jwt.sign(refreshTokenInfo,{expiresIn:"168h"})
         return reply.code(201).send({accessToken, refreshToken})
     } catch (error) {
-        // @ts-ignore
-        console.log(error.message)
+        console.log(error)
         return reply.code(500).send(error)
     }
 }
@@ -242,6 +242,7 @@ export async function UpdateUserHandler(request: FastifyRequest<{Body: UpdateUse
         }
         reply.code(400).send({message: "Please fill in some of the information"})
     } catch (error) {
+        console.log(error)
         return reply.code(500).send(error)
     }
 }
@@ -261,6 +262,7 @@ export async function GetUserHandler(request: FastifyRequest<any>, reply: Fastif
         })
         reply.code(200).send(result)
     } catch (error) {
+        console.log(error)
         return reply.code(500).send(error)
     }
 }

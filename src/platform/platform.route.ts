@@ -17,7 +17,7 @@ export default async function PlatformRoutes(server: FastifyInstance) {
     server.get("/one/:name",{
         preHandler: [server.authenticate],
         schema:{
-            description:"Get a single platform that contains the name that you want",
+            description:"Get a single platform from the name",
             params: $ref("getContentSchema"),
             response:{
                 201: $ref("getPlatformUniqueResponse")
@@ -29,7 +29,7 @@ export default async function PlatformRoutes(server: FastifyInstance) {
         preHandler: [server.authenticate],
         schema:{
             description:"Get the services of a platform that you want to find",
-            params: $ref("getContentSchema"),
+            params: $ref("getContentPaginationSchema"),
             response:{
                 201: $ref("getServiceMultipleResponse")
             },
@@ -39,7 +39,7 @@ export default async function PlatformRoutes(server: FastifyInstance) {
     server.get("/service/many/:name/:page",{
         preHandler: [server.authenticate],
         schema:{
-            description:"Search from a list of services, the service that you want to find",
+            description:"Get a list of services",
             params: $ref("getContentPaginationSchema"),
             response:{
                 201: $ref("getServiceMultipleResponse")
@@ -50,7 +50,7 @@ export default async function PlatformRoutes(server: FastifyInstance) {
     server.get("/service/one/:name",{
         preHandler: [server.authenticate],
         schema:{
-            description:"Get the services of a platform that you want to find",
+            description:"Get a single service from the name",
             params: $ref("getContentSchema"),
             response:{
                 201: $ref("getServiceUniqueResponse")

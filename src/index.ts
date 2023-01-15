@@ -12,7 +12,6 @@ import { withRefResolver } from "fastify-zod"
 import prisma from "./utils/prisma"
 import { platformSchemas } from "./platform/platform.schema"
 import { accountSchemas } from "./account/account.schema"
-import AdminRoutes from "./admin/admin.route"
 dotenv.config()
 
 // changed class structure to use my custom function and parameters for jwt
@@ -73,11 +72,6 @@ async function main() {
           name: "Account",
           description: "Access the user's accounts and do transactions"
         },
-        {
-          name: "Admin",
-          description: "Admin access to do CRUD operations into database easily"
-        },
-
       ]
     },
   }))
@@ -105,7 +99,6 @@ async function main() {
   server.register(UserRoutes,{prefix:'api/user'})
   server.register(AccountRoutes,{prefix:'api/account'})
   server.register(PlatformRoutes,{prefix:'api/platform'})
-  server.register(AdminRoutes,{prefix:'api/admin'})
   // function to use for jwt verification
   server.decorate("authenticate",
     async (request: FastifyRequest, reply: FastifyReply) => {
