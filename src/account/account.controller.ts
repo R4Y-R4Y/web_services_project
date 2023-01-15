@@ -1,7 +1,7 @@
 import { FastifyReply } from "fastify/types/reply";
 import { FastifyRequest } from "fastify/types/request";
 import prisma, { pageCount } from "../utils/prisma";
-import { BuyServiceAccountInput, CreateAccountInput, AccountSingleInput, GetPaginationInput, AccountPaginationInput, TransferMoneyAccountInput, AddDepositInput } from "./account.schema";
+import { BuyServiceAccountInput, CreateAccountInput, AccountSingleInput, GetPaginationInput, AccountPaginationInput, TransferMoneyAccountInput, AddDepositInput, GetMoneyTransferPaginationInput } from "./account.schema";
 
 
 export async function GetAccountMultipleHandler(request: FastifyRequest<{Params: GetPaginationInput}>, reply:FastifyReply) {
@@ -23,17 +23,18 @@ export async function GetAccountMultipleHandler(request: FastifyRequest<{Params:
     }    
 }
 
-export async function GetTransactionMultipleHandler(request: FastifyRequest<{Params: AccountPaginationInput}>, reply:FastifyReply) {
+export async function GetTransactionMultipleHandler(request: FastifyRequest<{Params: GetMoneyTransferPaginationInput}>, reply:FastifyReply) {
     try {
         const {user_id} = request.user as {user_id: string}
-        const {page} = request.params
+        const {page, accountId} = request.params
         const count = await prisma.transaction.count({where:{payer_transaction_id: user_id}})
+        console.log(count)
         if(count < page * pageCount) reply.code(404).send({message:"Maximum Amount reached. Please check previous pages."})
         const data = await prisma.transaction.findMany({
             where:{
                 OR:[
-                    {payer_transaction_id: user_id},
-                    {reciever_transaction_id: user_id}
+                    {payer_transaction_id: accountId},
+                    {reciever_transaction_id: accountId}
                 ]     
             },
             include:{
@@ -49,15 +50,18 @@ export async function GetTransactionMultipleHandler(request: FastifyRequest<{Par
     }
 }
 
-export async function GetPaymentMultipleHandler(request: FastifyRequest<{Params: AccountPaginationInput}>, reply:FastifyReply) {
+export async function GetPaymentMultipleHandler(request: FastifyRequest<{Params: GetMoneyTransferPaginationInput}>, reply:FastifyReply) {
     try {
         const {user_id} = request.user as {user_id: string}
-        const {page} = request.params
+        const {page, accountId} = request.params
         const count = await prisma.transaction.count({where:{payer_transaction_id: user_id}})
         if(count < page * pageCount) reply.code(404).send({message:"Maximum Amount reached. Please check previous pages."})
         const data = await prisma.payment.findMany({
             where:{
-                payer_payment_id: user_id
+                OR:[
+                    {payer_payment_id: accountId},
+                    {reciever_payment_id: accountId}
+                ]
             },
             include:{
                 payer_payment: true,

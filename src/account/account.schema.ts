@@ -84,6 +84,19 @@ const getPaginationRequestSchema = z.object({
 
 export type GetPaginationInput = z.infer<typeof getPaginationRequestSchema>
 
+const getMoneyTransferPaginationRequestSchema = z.object({
+    page: z.number({
+        required_error: 'Page is required',
+        invalid_type_error: 'Page must be a number',
+    }),
+    accountId: z.string({
+        required_error: 'Account ID is required',
+        invalid_type_error: 'Account ID must be a string',
+    })
+})
+
+export type GetMoneyTransferPaginationInput = z.infer<typeof getMoneyTransferPaginationRequestSchema>
+
 const getAccountSingleResponseSchema = z.object({
     id: z.string(),
     balance: z.number(),
@@ -114,5 +127,6 @@ export const { schemas: accountSchemas, $ref } = buildJsonSchemas({
     getAccountMultipleResponseSchema,
     getAccountSingleResponseSchema,
     getTransactionMultipleResponseSchema,
-    addDepositRequestSchema
+    addDepositRequestSchema,
+    getMoneyTransferPaginationRequestSchema
 },{$id: "Account", target:'openApi3'});

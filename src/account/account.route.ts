@@ -19,19 +19,19 @@ export default async function AccountRoutes(server: FastifyInstance) {
             tags: ["Account"]
         }
     },GetAccountSingleHandler)
-    server.get("/payment/:page",{
+    server.get("/payment/:accountId/:page",{
         preHandler: [server.authenticate],
         schema:{
-            description:"Get a list of transactions",
-            params: $ref("getPaginationRequestSchema"),
+            description:"Get a list of payments",
+            params: $ref("getMoneyTransferPaginationRequestSchema"),
             tags: ["Account"]
         }
     },GetPaymentMultipleHandler)
-    server.get("/transaction/:page",{
+    server.get("/transaction/:accountId/:page",{
         preHandler: [server.authenticate],
         schema:{
             description:"Get a list of transactions",
-            params: $ref("getPaginationRequestSchema"),
+            params: $ref("getMoneyTransferPaginationRequestSchema"),
             tags: ["Account"]
         }
     },GetTransactionMultipleHandler)
