@@ -12,6 +12,7 @@ import { withRefResolver } from "fastify-zod"
 import prisma from "./utils/prisma"
 import { platformSchemas } from "./platform/platform.schema"
 import { accountSchemas } from "./account/account.schema"
+import AdminRoutes from "./admin/admin.route"
 dotenv.config()
 
 // changed class structure to use my custom function and parameters for jwt
@@ -28,13 +29,17 @@ export const server = Fastify({
   logger: true
 })
 
-server.get("/ping",()=>{
-  return{pong:"pong!"}
-})
-
 async function main() {
   
   server.register(fjwt,{secret: String(process.env.JWT_SECRET)})
+  server.register(fjwt, {
+    secret: String(process.env.EMAIL_JWT_SECRET),
+    namespace: 'email',
+  })
+  server.register(fjwt, {
+    secret: String(process.env.ADMIN_JWT_SECRET),
+    namespace: 'admin',
+  })
   server.register(swagger,withRefResolver({
     routePrefix: "/documentation",
     exposeRoute: true,
@@ -68,6 +73,10 @@ async function main() {
           name: "Account",
           description: "Access the user's accounts and do transactions"
         },
+        {
+          name: "Admin",
+          description: "Admin access to do CRUD operations into database easily"
+        },
 
       ]
     },
@@ -96,6 +105,7 @@ async function main() {
   server.register(UserRoutes,{prefix:'api/user'})
   server.register(AccountRoutes,{prefix:'api/account'})
   server.register(PlatformRoutes,{prefix:'api/platform'})
+  server.register(AdminRoutes,{prefix:'api/admin'})
   // function to use for jwt verification
   server.decorate("authenticate",
     async (request: FastifyRequest, reply: FastifyReply) => {
@@ -114,7 +124,7 @@ async function main() {
       }
     }
   );
-  await server.listen({port: Number(process.env.PORT),host:"localhost"},(err,address) =>{
+  await server.listen({port: Number(process.env.PORT),host:String(process.env.HOST)},(err,address) =>{
     if (err) {
       console.error(err)
       process.exit(1)

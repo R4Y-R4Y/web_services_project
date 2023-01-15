@@ -22,20 +22,25 @@ datasource db {
 // Should contain information about the user and their accounts
 
 model User {
-  id       String    @id @unique @default(uuid()) @db.Uuid
-  email    String    @unique
-  name     String    @db.VarChar(32)
-  password String    @db.VarChar()
+  id        String    @id @unique @default(uuid()) @db.Uuid
+  email     String    @unique
+  name      String    @db.VarChar(32)
+  password  String    @db.VarChar()
+  confirmed Boolean   @default(false)
   // accounts array to create one to many relationship between owner and accounts
-  accounts Account[]
-  session  Session?
+  accounts  Account[]
+  session   Session?
   // session array to create one to many relationship between owner and sessions
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
 }
 
 model Session {
-  id      String @id @unique @default(uuid()) @db.Uuid
-  user    User   @relation(fields: [user_id], references: [id])
-  user_id String @unique @db.Uuid
+  id        String   @id @unique @default(uuid()) @db.Uuid
+  user      User     @relation(fields: [user_id], references: [id])
+  user_id   String   @unique @db.Uuid
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
 
 // Account schema
@@ -51,6 +56,8 @@ model Account {
   // owner id to create one to many relationship between owner and accounts
   owner_id          String        @db.Uuid
   owner             User          @relation(fields: [owner_id], references: [id])
+  createdAt         DateTime      @default(now())
+  updatedAt         DateTime      @updatedAt
 }
 
 // Platform Schema
@@ -62,7 +69,6 @@ model Platform {
   link        String
   description String?
   service     Service[]
-  accountId   String    @db.Uuid
 }
 
 // Service Schema
@@ -83,19 +89,23 @@ model Service {
 
 model Transaction {
   // to ensure many to many relationship between account and transaction
-  id                      String  @id @unique @default(uuid()) @db.Uuid
+  id                      String   @id @unique @default(uuid()) @db.Uuid
   payment                 Float
-  payer_transaction       Account @relation(name: "payerTransaction", fields: [payer_transaction_id], references: [id])
-  payer_transaction_id    String  @db.Uuid
-  reciever_transaction_id String  @db.Uuid
-  reciever_transaction    Account @relation(name: "recieverTransaction", fields: [reciever_transaction_id], references: [id])
+  payer_transaction       Account  @relation(name: "payerTransaction", fields: [payer_transaction_id], references: [id])
+  payer_transaction_id    String   @db.Uuid
+  reciever_transaction_id String   @db.Uuid
+  reciever_transaction    Account  @relation(name: "recieverTransaction", fields: [reciever_transaction_id], references: [id])
+  createdAt               DateTime @default(now())
+  updatedAt               DateTime @updatedAt
 }
 
 model Payment {
-  id                  String  @id @unique @default(uuid()) @db.Uuid
+  id                  String   @id @unique @default(uuid()) @db.Uuid
   payment             Float
-  payer_payment       Account @relation(name: "payerPayment", fields: [payer_payment_id], references: [id])
-  payer_payment_id    String  @db.Uuid
-  reciever_payment_id String  @db.Uuid
-  reciever_payment    Service @relation(name: "recieverPayment", fields: [reciever_payment_id], references: [id])
+  payer_payment       Account  @relation(name: "payerPayment", fields: [payer_payment_id], references: [id])
+  payer_payment_id    String   @db.Uuid
+  reciever_payment_id String   @db.Uuid
+  reciever_payment    Service  @relation(name: "recieverPayment", fields: [reciever_payment_id], references: [id])
+  createdAt           DateTime @default(now())
+  updatedAt           DateTime @updatedAt
 }

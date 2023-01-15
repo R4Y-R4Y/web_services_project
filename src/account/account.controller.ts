@@ -27,14 +27,14 @@ export async function GetTransactionMultipleHandler(request: FastifyRequest<{Par
     try {
         const {user_id} = request.user as {user_id: string}
         const {page} = request.params
-        const count = await prisma.transaction.count({where:{payer_id: user_id}})
+        const count = await prisma.transaction.count({where:{payer_transaction_id: user_id}})
         const data = await prisma.transaction.findMany({
             where:{
-                payer_id: user_id
+                payer_transaction_id: user_id
             },
             include:{
-                payer: true,
-                reciever: true,
+                payer_transaction: true,
+                reciever_transaction: true,
             },
             skip: pageCount*page,
             take: count/(pageCount*page + pageCount) > 1 ? pageCount : count % pageCount,
@@ -103,8 +103,8 @@ export async function BuyServiceAccountHandler(request: FastifyRequest<{Body: Bu
             prisma.transaction.create({
                 data:{
                     payment: service.price,
-                    payer_id: accountId,
-                    reciever_id: serviceId
+                    payer_transaction_id: accountId,
+                    reciever_transaction_id: serviceId
                 }
             })
         ])

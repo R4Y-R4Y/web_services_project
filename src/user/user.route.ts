@@ -1,5 +1,5 @@
 import { FastifyInstance } from "fastify"
-import { GetUserHandler, RefreshUserHandler, SignInUserHandler, UpdateUserHandler, registerUserHandler } from "./user.controller"
+import { GetUserHandler, RefreshUserHandler, SignInUserHandler, UpdateUserHandler, VerifyUserHandler, registerUserHandler } from "./user.controller"
 import { $ref } from "./user.schema"
 
 // where the routes for the user gets defined
@@ -7,11 +7,11 @@ import { $ref } from "./user.schema"
 export default async function UserRoutes(server: FastifyInstance) {
     server.post("/register",{
         schema:{
-            description:"Register a user to our platform",
+            description:"Register a user to our platform and send an email verification",
             body: $ref("createUserSchema"),            
             security:[],
             response:{
-                201: $ref("createUserResponseSchema")
+                202: $ref("createUserResponseSchema")
             },
             tags: ["User"]
         }
@@ -27,10 +27,21 @@ export default async function UserRoutes(server: FastifyInstance) {
             tags: ["User"]
         }
     },SignInUserHandler)
+    server.get("/verify",{
+        schema:{
+            description:"Verify users emails",
+            querystring: $ref('verifyUserRequestSchema'),
+            security:[],
+            response:{
+                201: $ref('verifyUserResponseSchema')
+            },
+            tags: ["User"]
+        }
+    },VerifyUserHandler)
     server.put("/refresh",{
         schema:{
             description:"Refresh access and refresh tokens",
-            body: $ref("refreshSchema"),
+            params: $ref("refreshSchema"),
             security:[],
             response:{
                 201: $ref("loginResponseSchema")

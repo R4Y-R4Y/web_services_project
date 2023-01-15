@@ -12,14 +12,19 @@ Table User {
   email String [unique, not null]
   name String [not null]
   password String [not null]
+  confirmed Boolean [not null, default: false]
   accounts Account [not null]
   session Session
+  createdAt DateTime [default: `now()`, not null]
+  updatedAt DateTime [not null]
 }
 
 Table Session {
   id String [pk, unique]
   user User [not null]
   user_id String [unique, not null]
+  createdAt DateTime [default: `now()`, not null]
+  updatedAt DateTime [not null]
 }
 
 Table Account {
@@ -30,6 +35,8 @@ Table Account {
   reciever Transaction [not null]
   owner_id String [not null]
   owner User [not null]
+  createdAt DateTime [default: `now()`, not null]
+  updatedAt DateTime [not null]
 }
 
 Table Platform {
@@ -38,7 +45,6 @@ Table Platform {
   link String [not null]
   description String
   service Service [not null]
-  accountId String [not null]
 }
 
 Table Service {
@@ -58,6 +64,8 @@ Table Transaction {
   payer_transaction_id String [not null]
   reciever_transaction_id String [not null]
   reciever_transaction Account [not null]
+  createdAt DateTime [default: `now()`, not null]
+  updatedAt DateTime [not null]
 }
 
 Table Payment {
@@ -67,6 +75,8 @@ Table Payment {
   payer_payment_id String [not null]
   reciever_payment_id String [not null]
   reciever_payment Service [not null]
+  createdAt DateTime [default: `now()`, not null]
+  updatedAt DateTime [not null]
 }
 
 Ref: Session.user_id - User.id
